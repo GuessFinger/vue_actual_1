@@ -61,3 +61,31 @@
     ```
 - prettierrc 这个文件主要是配置格式化代码用的 已经有了.eslintrc文件 这个感觉也不是很必要   
 
+- 2021年7月1日23:59:27  lesson44
+
+- 给axios添加拦截器
+  ```javascript
+      axios.interceptors.request.use(config => {
+        // 这样可以给每个request都添加相关的信息 项目这里给每个都添加一个token
+        // 通过打印config 可以查看到其中的关键信息 需要注意的是 一定要返回config  这个和router里面的beforeEach 里面
+        // 一定要返回next()是一样的 
+        console.log(config)    
+        return config;
+      })
+  ```
+- 给路由添加子路由信息
+    `router:[{path:'/home',redirect:'/welcome',component:home,children:[{path:'/welcome',component:welcome}]}]`
+- 老师在mounted中调用的方式是 使用的是下面的那种方式 实际在项目中 我们也可以采用 
+    ```javascript
+        new Vue({
+            mounted(){
+                this.menuList();
+            }, 
+            methods:{
+              async menuList(){
+                let {data:res} = await this.$http.get('/menus');
+                
+              }
+            }
+      }) 
+    ```
