@@ -28,7 +28,7 @@
     配置完路由以后 需要使用  router-view 这样路由组件就会在 app.vue中进行显示了
 - 针对不同的浏览器 市面上有一套通用的处理css的方式  https://github.com/necolas/normalize.css  就是为了兼容不同的浏览器
 - 针对某个特定的组件 给它的css中添加scoped 表示这个样式只针对当前的组件是生效
-
+---
 2021年6月30日22:33:12 lesson30章节
 - form表单的验证 
     - 之前用过 在公司的时候用的是xui的组件 死活不生效，很苦恼 不知道因为什么？ 今天在login组件中也出现同样的情况 
@@ -60,7 +60,7 @@
       })
     ```
 - prettierrc 这个文件主要是配置格式化代码用的 已经有了.eslintrc文件 这个感觉也不是很必要   
-
+---
 - 2021年7月1日23:59:27  lesson44
 
 - 给axios添加拦截器
@@ -89,3 +89,25 @@
             }
       }) 
     ```
+---
+- 2021年7月3日00:16:42 lesson58
+
+- axios发送get请求 `this.$http.get('users',{params:{query:'',pageNum:1,pageSize:5}})`  刚看调了半天以为是接口的问题 
+    最后发现是发现是写错了 get 参数编写 {params:{'参数对象':'参数对象'}} 这样的写法 和post不一样哈
+
+- element-ui中form表单的自定义验证规则
+   ```javascript
+    let checkEmail = (rule,value,cb) => {
+        // value 表示需要验证的值 cb 表示回调函数 如果是错误的话 需要往里面传入一个错误对象 
+        const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
+        if (regEmail.test(value)) {
+          return cb()
+        }
+        cb(new Error('请输入正确的邮箱')) 
+    }
+    // 使用这个规则的话 用validator 然后对象指向你自定义的规则就可以了  
+    let ruleObj = {email: [
+          {required: true, message: '请输入邮箱',trigger: 'blur'},
+          { min: 5, max: 20, message: '长度在 5 到 20 个字符', trigger: 'blur'},
+          { validator: checkEmail,trigger: 'blur'}]};
+   ```

@@ -1,5 +1,10 @@
 import Vue from 'vue'
-import { Form, Button, FormItem, Input, Message, Container, Header, Aside, Main, Menu, MenuItem, Submenu, MenuItemGroup, Breadcrumb, BreadcrumbItem, Card, Row, Col } from 'element-ui'
+import {
+  Form, Button, FormItem, Input, Message, Container, Header,
+  Aside, Main, Menu, MenuItem, Submenu, MenuItemGroup, Breadcrumb,
+  BreadcrumbItem, Card, Row, Col, Table, TableColumn,
+  Switch, Tooltip, Pagination, Dialog
+} from 'element-ui'
 Vue.use(Button)
 Vue.use(Form)
 Vue.use(Button)
@@ -18,6 +23,12 @@ Vue.use(MenuItemGroup)
 Vue.use(Card)
 Vue.use(Row)
 Vue.use(Col)
+Vue.use(TableColumn)
+Vue.use(Table)
+Vue.use(Switch)
+Vue.use(Tooltip)
+Vue.use(Pagination)
+Vue.use(Dialog)
 
 // 这个需要全局挂载
 Vue.prototype.$message = Message
