@@ -111,3 +111,6 @@
           { min: 5, max: 20, message: '长度在 5 到 20 个字符', trigger: 'blur'},
           { validator: checkEmail,trigger: 'blur'}]};
    ```
+
+- element-ui组件 比如说 el-input disable的 如果直接写disable的没有任何问题 
+    另一种写法 :disable="false"  注意前面的:

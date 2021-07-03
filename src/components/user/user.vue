@@ -32,9 +32,9 @@
           </template>
         </el-table-column>
         <el-table-column label="姓名" width="180">
-          <template slot-scope="">
-            <el-button type="primary" icon="el-icon-edit" size="mini"></el-button>
-            <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+          <template slot-scope="scope">
+            <el-button type="primary" icon="el-icon-edit" size="mini" @click="editDialog(scope.row)"></el-button>
+            <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteUser(scope.row.id)"></el-button>
             <el-tooltip effect="dark" content="用户设置" placement="top" :enterable="false">
               <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
             </el-tooltip>
@@ -76,6 +76,26 @@
       </span>
     </el-dialog>
 
+    <el-dialog @close="closeDialog"
+               title="添加用户"
+               :visible.sync="editDialogVisible"
+               width="50%">
+      <el-form :model="editForm" :rules="addFromRule" ref="editFormRef" label-width="150px">
+        <el-form-item label="姓名" prop="username">
+          <el-input v-model="editForm.username" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="editForm.email"></el-input>
+        </el-form-item>
+        <el-form-item label="电话" prop="mobile">
+          <el-input v-model="editForm.mobile"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+         <el-button @click="editDialogVisible = false">取 消</el-button>
+         <el-button type="primary" @click="editUser">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -110,12 +130,14 @@ export default {
       userList: [],
       total: 0,
       addDialogVisible: false,
+      editDialogVisible: false,
       addForm: {
         username: '',
         password: '',
         email: '',
         mobile: ''
       },
+      editForm: {},
       addFromRule: {
         username: [
           {
@@ -216,6 +238,40 @@ export default {
         this.addDialogVisible = false
         this.getUserList()
       })
+    },
+    editDialog (row) {
+      this.editDialogVisible = true
+      this.editForm = row
+    },
+    editUser () {
+      this.$refs.editFormRef.validate(async value => {
+        if (value) {
+          const { data: res } = await this.$http.post('users', this.editForm)
+          if (res.meta.status !== 200) return this.$message.error('修改失败')
+          this.$message.success('成功修改用户')
+          this.editDialogVisible = false
+          this.getUserList()
+        }
+      })
+    },
+    async deleteUser (id) {
+      const conformResult = await this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(error => {
+        return error
+      })
+      // 如果用户确认删除 打印的就是字符串 conform
+      if (conformResult !== 'conform') {
+        return this.$message.info('已经取消删除')
+      }
+      const { data: res } = await this.$http.post('delete')
+      if (res.meta.status !== 200) {
+        return this.$message.error('删除用户失败')
+      }
+      this.$message.success('删除用户成功')
+      this.getUserList()
     }
   }
 }

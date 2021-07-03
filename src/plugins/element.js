@@ -3,7 +3,7 @@ import {
   Form, Button, FormItem, Input, Message, Container, Header,
   Aside, Main, Menu, MenuItem, Submenu, MenuItemGroup, Breadcrumb,
   BreadcrumbItem, Card, Row, Col, Table, TableColumn,
-  Switch, Tooltip, Pagination, Dialog
+  Switch, Tooltip, Pagination, Dialog, MessageBox
 } from 'element-ui'
 Vue.use(Button)
 Vue.use(Form)
@@ -32,3 +32,4 @@ Vue.use(Dialog)
 
 // 这个需要全局挂载
 Vue.prototype.$message = Message
+Vue.prototype.$confirm = MessageBox.confirm
