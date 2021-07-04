@@ -116,3 +116,5 @@
     - 比如说 el-input disable的 如果直接写disable的没有任何问题 另一种写法 :disable="false"  注意前面的:
     - 在使用导航栏的时候 router 可以用index作为路由  default-active 激活当前菜单的index 
     - 在使用el-pagination的时候 其中有一个属性:current-page="pageNum " 注意pageNum最后面有空格是不行的  
+    - 在使用el-tabs的时候 页面直接卡死了 以为是哪里写错了 需要把el-tabs放到el-row里面就好了
+- 页面数组渲染的时候  如果往数组里面添加一个元素的时候  页面中的数组可能没有数组刷新 用VUe.$set(array,index,value) 这样的方式就可以重新刷新页面
