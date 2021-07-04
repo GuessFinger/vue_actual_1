@@ -7,7 +7,7 @@
       </el-breadcrumb>
       <el-card class="box-card">
         <el-row :gutter="20">
-         <el-col :span="24">
+         <el-col :span="6">
            <el-input placeholder="请输入内容" v-model="queryInfo.query" clearable @click="getGoodsList">
              <el-button slot="append" icon="el-icon-search" @click="getGoodsList"></el-button>
            </el-input>
