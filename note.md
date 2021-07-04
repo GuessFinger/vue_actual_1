@@ -112,5 +112,7 @@
           { validator: checkEmail,trigger: 'blur'}]};
    ```
 
-- element-ui组件 比如说 el-input disable的 如果直接写disable的没有任何问题 
-    另一种写法 :disable="false"  注意前面的:
+- element-ui组件 
+    - 比如说 el-input disable的 如果直接写disable的没有任何问题 另一种写法 :disable="false"  注意前面的:
+    - 在使用导航栏的时候 router 可以用index作为路由  default-active 激活当前菜单的index 
+
