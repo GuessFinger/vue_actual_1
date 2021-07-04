@@ -111,7 +111,7 @@ export default {
   }
 
   .toggle-button {
-    background-color: red;
+    background-color: #9de1c5;
     font-size: 10px;
     color: #ffffff;
     text-align: center;

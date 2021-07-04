@@ -142,6 +142,6 @@
 - `import TreeTable from 'vue-table-with-tree-grid'` 这个是树形表格
   `import VueQuillEditor from 'vue-quill-editor'`  富文本编辑器
   `@import "../../plugins/timeline/timeline.css";`  在组件的style中可以这样引用css
- 
+  `import * as echarts from 'echarts'` 导入echarts的时候 因为它默认导出的是* 所以我们要这样重命名下 
 - 如果一个组件没有办法使用的时候 注意一下版本问题 
 
