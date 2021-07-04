@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import './assets/css/global.css'
 import './plugins/element.js'
+import TreeTable from 'vue-table-with-tree-grid'
 
 import axios from 'axios'
 
@@ -18,7 +19,7 @@ axios.interceptors.request.use(config => {
 })
 
 Vue.config.productionTip = false
-
+Vue.component('tree-table', TreeTable)
 new Vue({
   router,
   render: h => h(App)
