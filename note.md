@@ -118,3 +118,28 @@
     - 在使用el-pagination的时候 其中有一个属性:current-page="pageNum " 注意pageNum最后面有空格是不行的  
     - 在使用el-tabs的时候 页面直接卡死了 以为是哪里写错了 需要把el-tabs放到el-row里面就好了
 - 页面数组渲染的时候  如果往数组里面添加一个元素的时候  页面中的数组可能没有数组刷新 用VUe.$set(array,index,value) 这样的方式就可以重新刷新页面
+
+- 全局过滤器
+```javascript
+   Vue.filter('dateFilter',(value) => {
+    const date = new Date(value)
+    const year = date.getFullYear()
+    const month = (date.getMonth() + 1 + '').padStart(2, '0')
+    const day = (date.getDate() + '').padStart(2, '0')
+    const hour = (date.getHours() + '').padStart(2, '0')
+    const minutes = (date.getMinutes() + '').padStart(2, '0')
+    const seconds = (date.getSeconds() + '').padStart(2, '0')
+    return `${year}-${month}-${day} ${hour}:${minutes}:${seconds}` 
+   })
+   // 1. 全局过滤器的用 Vue.filter(filterName,() => {}) 这样的方式定义的
+   // 2. 之前针对月啊 小时啊  都是判断是否小于10  然后手动的去拼接0  es6是有语法的 padStart(length,str) 下次遇到的话这样处理
+   // 3. 字符串模板也要用起来  `${year}-${month}-${day]` 
+```
+
+- 在添加步骤条的时候 样式怎么都对不上 哎 找了半天都没有发现问题 最后返现在 #app上添加了一个全局属性 text-align:center 
+    导致后面的样式一直有问题的 在添加全局样式的时候 一样要非常的小心 你影响的是全局的组件
+    
+- `import TreeTable from 'vue-table-with-tree-grid'` 这个是树形表格
+  `import VueQuillEditor from 'vue-quill-editor'`  富文本编辑器
+ 
+    
