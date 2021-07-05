@@ -145,3 +145,93 @@
   `import * as echarts from 'echarts'` 导入echarts的时候 因为它默认导出的是* 所以我们要这样重命名下 
 - 如果一个组件没有办法使用的时候 注意一下版本问题 
 
+- 项目优化的策略
+    - 生成打包报告
+    - 启动第三方的CDN
+    - element-ui组件的按需加载
+    - 路由的懒加载
+    - 首页内容的定制
+
+
+- 项目优化 
+    
+    ```
+        // - 安装 NProgress插件(运行依赖)
+        // 这个插件的作用就是 在进行菜单切换的时候 最上面有一个进度条 
+        import "NProgress" from "nprogress"
+        import 'nprogress/nprogress.css'
+        // axios.interceptors.request 中添加 NProgress.start()
+        // axios.interceptors.response 中添加 NProgress.done()
+        
+        // babel-plugin-transform-remove-console 这个插件的作用就是 防止我们在生产打包的时候 把console.log也打包进去
+        // 在babel.config.js中的plugins:['transform-remove-console'] 这样我们重新打包就可以了
+        // 这里面有一个问题 就是我在开发阶段我是不需要移除console.log的
+        const prodPlugins = [];
+        if(process.env.NODE_ENV === 'production'){
+            prodPlugins.push('transform-remove-console')
+        }    
+        // 在下面的对象中
+        plugins:[['这里是另一些配置插件'],...prodPlugins]
+  
+    ```
+  
+    - 生成打包报告
+        - 通过命令行的方式 `vue-cli-service build --report`
+        - 直接通过ui可视化面板中进行查看 在分析中 (发现有一个文件非常的大？ 它把所有第三方引入的包js和css，都打包进入同一个文件中了，
+        怎么处理呢？如果可以访问外网的话 我们可以把第三方的包 用CDN的方式进行引入)
+            ```
+                // 在vue.conf.js中的打包依赖中配置  这个的意思就是 如果打包遇到下面这些包的话 不要把它打包进去 
+                config.set('externals', {
+                      vue: 'Vue',
+                      'vue-router': 'VueRouter',
+                      axios: 'axios',
+                      lodash: '_',
+                      echarts: 'echarts',
+                      nprogress: 'NProgress',
+                      'vue-quill-editor': 'VueQuillEditor'
+                })  
+                // 接着在index.html文件中 把你排除在外的js和css引进去
+                <link rel="stylesheet" href="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.css" />
+                <!-- 富文本编辑器 的样式表文件 -->
+                <link rel="stylesheet" href="https://cdn.staticfile.org/quill/1.3.4/quill.core.min.css" />
+                <link rel="stylesheet" href="https://cdn.staticfile.org/quill/1.3.4/quill.snow.min.css" />
+                <link rel="stylesheet" href="https://cdn.staticfile.org/quill/1.3.4/quill.bubble.min.css" />
+                <!-- element-ui 的样式表文件 -->
+                <link rel="stylesheet" href="https://cdn.staticfile.org/element-ui/2.8.2/theme-chalk/index.css" />
+                <script src="https://cdn.staticfile.org/vue/2.5.22/vue.min.js"></script>
+                <script src="https://cdn.staticfile.org/vue-router/3.0.1/vue-router.min.js"></script>
+                <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+                <script src="https://cdn.staticfile.org/lodash.js/4.17.11/lodash.min.js"></script>
+                <script src="https://cdn.staticfile.org/echarts/4.1.0/echarts.min.js"></script>
+                <script src="https://cdn.staticfile.org/nprogress/0.2.0/nprogress.min.js"></script>
+                <!-- 富文本编辑器的 js 文件 -->
+                <script src="https://cdn.staticfile.org/quill/1.3.4/quill.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/vue-quill-editor@3.0.4/dist/vue-quill-editor.js"></script>
+                <!-- element-ui 的 js 文件 -->
+                <script src="https://cdn.staticfile.org/element-ui/2.8.2/index.js"></script>
+           ```
+    
+    - vue.config.js  vue-cli 让程序员更加关注业务逻辑的处理 如果我们要改变webpack的配置 在项目的根目录下创建vue.config.js文件 
+        ![优化策略1](./note_images/优化策略1.png)
+        configureWebpack和chainWebpack的作用都是一样的 自定义webpack的定义方法 后面的是通过链式的方式进行修改 前面的是通过对象
+        更加详细的可以查看上面的图片
+        
+    - 路由的懒加载
+    ```
+      - 安装插件 @babel/plugin-syntax-dynamic-import
+      - 在babel.config.js中进行配置  也就是引入上面的插件
+      - 使用 () => import(...) 这种配置方式 中间的配置是把你规定的文件打包到同一个文件中 也就是分组的概念
+  
+      // import list from '../components/goods/list'
+      const list = () => import(/* webpackChunkName: "GoodsList_Add" */ '../components/goods/list.vue')
+      // import add from '../components/goods/add'
+      const add = () => import(/* webpackChunkName: "GoodsList_Add" */ '../components/goods/add.vue')
+      
+      // import orders from '../components/order/order'
+      const orders = () => import(/* webpackChunkName: "Order_Report" */ '../components/order/order.vue')
+      // import report from '../components/report/report'
+      const report = () => import(/* webpackChunkName: "Order_Report" */ '../components/report/report.vue')
+    ```
+          
+        
+- 讲道理 照着这个项目敲了一下代码 在实际的开发中是有很大帮助的 加油
